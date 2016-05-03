@@ -1,11 +1,20 @@
 package CW4;
 
+import javax.swing.*;
+
 /**
  * Created by Rahul Soni on 02/05/2016.
  */
 public interface IModel {
-     void store(int x, int y);
+    void Move(int yax, int xax, boolean actuallyMove);
 
 
-    int[][] getFirstBoard();
+
+    int getFirstBlack();
+
+    int getFirstWhite();
+
+    Piece[][] getPieces();
+
+    void setPieces(Piece[][] pieces);
 }

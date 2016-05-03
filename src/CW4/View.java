@@ -1,274 +1,262 @@
 package CW4;
 
-import CW4.IControllerFromView;
-import CW4.IView;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.*;
-import java.io.File;
-import java.io.FileInputStream;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Arrays;
-
-
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by Rahul Soni on 02/05/2016.
  */
 public class View implements IView {
 
+
     IControllerFromView c;
-    public View(IControllerFromView c)
-    {
+
+    public View(IControllerFromView c) {
         this.c = c;
     }
 
-    int [][] board;
-    JFrame frame;
+    static Container blackpane;
 
-    public void create() throws IOException {
+    static Container whitepane;
 
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(frame.getSize());
-        frame.setResizable(false);
+    private static Color myGreen = new Color(0x5CFF49);
 
-        Container pane = frame.getContentPane();
+    private static BufferedImage noCircle;
 
-        pane.setLayout(new BorderLayout());
+    private static BufferedImage whiteCircle;
+
+    private static BufferedImage blackCircle;
+
+    static {
+        try {
+            noCircle = ImageIO.read(View.class.getResource("/CW4/noCircle.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static {
+        try {
+            whiteCircle = ImageIO.read(View.class.getResource("/CW4/whiteCircle.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static {
+        try {
+            blackCircle = ImageIO.read(View.class.getResource("/CW4/blackCircle.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static JFrame frame;
 
 
+    public void create() {
 
-
-
-        JLabel Score = new JLabel("The current score is White:0 Black:0", JLabel.CENTER);
-        JLabel turnNotify = new JLabel("It is currently White's turn.", JLabel.CENTER);
-
-        pane.add(Score, BorderLayout.PAGE_START);
-
-        pane.add(turnNotify, BorderLayout.PAGE_END);
-
+        frame = new JFrame("Reversii");
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         JDesktopPane desktop = new JDesktopPane();
-        JInternalFrame whitePlayer = new JInternalFrame("White Player", true, false, false, true);
-        JInternalFrame blackPlayer = new JInternalFrame("Black Player", true, false, false, true);
 
 
-        Container whitePane = whitePlayer.getContentPane();
-        Container blackPane = blackPlayer.getContentPane();
+        JInternalFrame whitePlayer = new JInternalFrame("White");
+        whitePlayer.setBounds(25, 50, 200, 100);
+        whitePlayer.setSize(600, 600);
+        whitePlayer.setVisible(true);
 
+        whitepane = whitePlayer.getContentPane();
+        whitepane.setLayout(new BorderLayout());
 
-
-        whitePane.setLayout(new BorderLayout());
-        blackPane.setLayout(new BorderLayout());
-
-
-        JPanel whiteBoard = new JPanel(new GridBagLayout());
-        whiteBoard.setSize(600,600);
-
-
-        JPanel blackBoard = new JPanel(new GridBagLayout());
-        blackBoard.setSize(600,600);
-
+        JButton greedyWhite = new JButton("Greedy AI white");
+        whitepane.add(greedyWhite, BorderLayout.PAGE_END);
 
         GridBagConstraints gBC = new GridBagConstraints();
         gBC.fill = GridBagConstraints.BOTH;
 
-
-        BufferedImage white = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("CW4/blackCircle.png"));
-
-        BufferedImage blank = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("CW4/noCircle.png"));
-
-        BufferedImage black = ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("CW4/whiteCircle.jpg"));
-
-        //BufferedImage white = ImageIO.read(new File("\\Users\\Rahul Soni\\IdeaProjects\\MVC\\src\\CW4\\whiteCircle.jpg"));
-
-        //BufferedImage black = ImageIO.read(new File("\\Users\\Rahul Soni\\IdeaProjects\\MVC\\src\\CW4\\blackCircle.png"));
-
-        white.getScaledInstance(1, 1, Image.SCALE_DEFAULT);
-        black.getScaledInstance(1, 1, Image.SCALE_DEFAULT);
+        JPanel whiteSpace = new JPanel();
+        whiteSpace.setLayout(new GridBagLayout());
 
 
-        gBC.gridx = 0;
-        gBC.gridy = 0;
-
-        Color newGreen = new Color(0x5CFF49);
-        gBC.weightx = gBC.weighty = 1.0;
+        whiteSpace = makeWhite();
+        whiteSpace.setVisible(true);
+        whitepane.add(whiteSpace, BorderLayout.CENTER);
 
 
-        int [][] board = c.getFirstBoard();
-
-        /*
-        for (int[] row : board)
-        {
-            System.out.println(Arrays.toString(row));
-        }
-
-        */
+        JInternalFrame blackPlayer = new JInternalFrame("Black");
+        blackPlayer.setBounds(725, 50, 200, 100);
+        blackPlayer.setSize(600, 600);
+        blackPlayer.setVisible(true);
 
 
-        for (int i = 0; i < 8; ++i) // x value
-        {
-            gBC.gridx = i;
-            for (int b = 0; b < 8; ++b)  // y value
-            {
-                gBC.gridy = b;
+        blackpane = blackPlayer.getContentPane();
+        blackpane.setLayout(new BorderLayout());
 
-                if (board[i][b] == 0) {
+        JButton greedyBlack = new JButton("Greedy AI black");
+        blackpane.add(greedyBlack, BorderLayout.PAGE_END);
 
+        JPanel blackSpace = new JPanel();
+        blackSpace.setLayout(new GridBagLayout());
 
-                    JButton y = new JButton(new ImageIcon(blank));
-                    int finalB = b;
-                    int finalI = i;
-                    y.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            c.move(finalI, finalB);
-                        }
-                    });
-                    y.setBackground(newGreen);
+        blackSpace = makeBlack();
 
-                    whiteBoard.add(y, gBC);
-
-                } else if (board[i][b] == 1) {
-
-                    JButton y = new JButton(new ImageIcon(black));
-
-                    y.setBackground(newGreen);
-
-                    whiteBoard.add(y, gBC);
-
-                } else if (board[i][b] == -1) {
-
-                    JButton y = new JButton(new ImageIcon(white));
-
-                    y.setBackground(newGreen);
-
-                    whiteBoard.add(y, gBC);
-                }
-            }
-        }
-
-        /*
-
-        for (int i = 0; i < 8; ++i) // x value
-        {
-            gBC.gridx = i;
-            for (int b = 0; b < 8; ++b)  // y value
-            {
-                gBC.gridy = b;
-
-                JButton y = new JButton(new ImageIcon(white));
-                int finalB = b;
-                int finalI = i;
-                y.addActionListener(new ActionListener()
-                {
-                    public void actionPerformed(ActionEvent e)
-                    {
-                        c.move(finalI, finalB);
-                    }
-                });
-                y.setBackground(Color.GREEN);
-
-                whiteBoard.add(y, gBC);
-
-            }
-        }
-
-        */
+        blackSpace.revalidate();
+        blackSpace.setVisible(true);
+        blackpane.add(blackSpace, BorderLayout.CENTER);
 
 
-        JLabel whiteScore = new JLabel("Current score - 0");
-        whitePane.add(whiteScore, BorderLayout.PAGE_START);
+        JLabel scoreLabel = new JLabel("The game is currently tied 0-0", SwingConstants.CENTER);
 
-        whitePane.add(whiteBoard, BorderLayout.CENTER);
-        JButton greedyButtonWhite = new JButton("Greedy play white");
+        JLabel turnLabel = new JLabel("It is currently white's turn", SwingConstants.CENTER);
 
-        whitePane.add(greedyButtonWhite,BorderLayout.PAGE_END);
-
-
-
-        for (int i = 0; i < 8; ++i) // x value
-        {
-            gBC.gridx = i;
-            for (int b = 0; b < 8; ++b)  // y value
-            {
-                gBC.gridy = b;
-
-                if ( board[7 -i][b] == 0) {
-
-
-                    JButton y = new JButton(new ImageIcon(blank));
-                    int finalB = b;
-                    int finalI = i;
-                    y.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            c.move(finalI, finalB);
-                        }
-                    });
-                    y.setBackground(newGreen);
-
-                    blackBoard.add(y, gBC);
-
-                } else if (board[7 -i][b] == 1) {
-
-                    JButton y = new JButton(new ImageIcon(black));
-
-                    y.setBackground(newGreen);
-
-                    blackBoard.add(y, gBC);
-
-                } else if (board[7 -i][b] == -1) {
-
-                    JButton y = new JButton(new ImageIcon(white));
-
-                    y.setBackground(newGreen);
-
-                    blackBoard.add(y, gBC);
-                }
-            }
-        }
-
-
-        JLabel blackScore = new JLabel("Current score - 0");
-        blackPane.add(blackScore, BorderLayout.PAGE_START);
-
-
-        blackPane.add(blackBoard, BorderLayout.CENTER);
-        JButton greedyButtonBlack = new JButton("Greedy play black");
-
-        blackPane.add(greedyButtonBlack,BorderLayout.PAGE_END);
 
         desktop.add(whitePlayer);
         desktop.add(blackPlayer);
 
 
-
-        whitePlayer.setBounds(25, 25, 200, 100);
-        blackPlayer.setBounds(725, 25, 200, 100);
-
-        whitePlayer.setSize(600,600);
-        blackPlayer.setSize(600,600);
+        frame.add(scoreLabel, BorderLayout.PAGE_START);
+        frame.add(desktop, BorderLayout.CENTER);
+        frame.add(turnLabel, BorderLayout.PAGE_END);
+        frame.setSize(1375, 750);
 
 
-
-        whitePlayer.setVisible(true);
-        blackPlayer.setVisible(true);
-
-
-
-        pane.add(desktop);
-        frame.setSize(1375, 700);
         frame.setVisible(true);
+    }
+
+
+    public JPanel makeWhite() {
+
+
+        JPanel tempPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gBC = new GridBagConstraints();
+        gBC.fill = GridBagConstraints.BOTH;
+
+        Piece[][] Pieces = c.getPieces();
+        gBC.gridy = gBC.gridx = 0;
+        gBC.weightx = gBC.weighty = 1.0;
+
+        for (Piece[] f : Pieces) {
+            gBC.gridx = f[0].getMyX();
+
+            for (Piece l : f) {
+                gBC.gridy = l.getMyY();
+                Piece trialPiece = new Piece(gBC.gridx, gBC.gridy, l.isOwned());
+                trialPiece.setBackground(myGreen);
+                if (l.isOwned() == 0) {
+                    trialPiece.setIcon(new ImageIcon(noCircle));
+                    trialPiece.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            c.move(true, trialPiece.getMyX(),trialPiece.getMyY());
+                        }
+                    });
+                    tempPanel.add(trialPiece, gBC);
+
+                } else if (l.isOwned() == 1) {
+                    trialPiece.setIcon(new ImageIcon(whiteCircle));
+                    tempPanel.add(trialPiece, gBC);
+
+                } else if (l.isOwned() == -1) {
+                    trialPiece.setIcon(new ImageIcon(blackCircle));
+                    tempPanel.add(trialPiece, gBC);
+                }
+
+            }
+
+
+        }
+        return tempPanel;
+    }
+
+    public JPanel makeBlack() {
+
+        JPanel tempPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gBC = new GridBagConstraints();
+        gBC.fill = GridBagConstraints.BOTH;
+
+        Piece[][] Pieces = c.getPieces();
+        gBC.gridy = gBC.gridx = 0;
+        gBC.weightx = gBC.weighty = 1.0;
+
+        for (Piece[] f : Pieces) {
+            gBC.gridx = 7 - f[0].getMyX();
+
+            for (Piece l : f) {
+                gBC.gridy = 7 -l.getMyY();
+                Piece tempPiece = new Piece(gBC.gridx, gBC.gridy, l.isOwned());
+                tempPiece.setBackground(myGreen);
+                if (l.isOwned() == 0) {
+                    tempPiece.setIcon(new ImageIcon(noCircle));
+                    tempPiece.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            c.move(false, 7 - tempPiece.getMyX(),7 -tempPiece.getMyY());
+                        }
+                    });
+                    tempPanel.add(tempPiece, gBC);
+
+                } else if (l.isOwned() == 1) {
+                    tempPiece.setIcon(new ImageIcon(whiteCircle));
+                    tempPanel.add(tempPiece, gBC);
+
+                } else if (l.isOwned() == -1) {
+                    tempPiece.setIcon(new ImageIcon(blackCircle));
+                    tempPanel.add(tempPiece, gBC);
+                }
+
+            }
+
+
+        }
+
+        return tempPanel;
 
     }
 
-    public void displayError(String strError){
 
-        JOptionPane.showMessageDialog(frame, strError);
+    public void updateView() {
+
+        Piece[][] Pieces = c.getPieces();
+
+        JPanel whiteSpace = makeWhite();
+
+        whiteSpace.setVisible(true);
+
+        JPanel blackSpace = makeBlack();
+
+        blackSpace.setVisible(true);
+
+
+        whitepane.remove(1);
+        whitepane.add(whiteSpace);
+
+        blackpane.remove(1);
+        blackpane.add(blackSpace);
+
+        whitepane.getParent().revalidate();
+        whitepane.getParent().repaint();
+
+        blackpane.getParent().revalidate();
+        blackpane.getParent().repaint();
+
+
+
+
+
+
     }
+
+
 }
+
+
+
+
+

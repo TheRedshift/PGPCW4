@@ -1,5 +1,6 @@
 package CW4;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -16,25 +17,40 @@ public class Controller implements IControllerFromModel, IControllerFromView {
         view = v;
     }
 
-    public void move(int i, int b) {
-        System.out.println("Button pressed - " + String.valueOf(i) + String.valueOf(b));
-        if (i > 3) {
-            view.displayError("Button is more than 3");
+    public void move(boolean p, int i, int b){
 
-        }
 
-        model.store(i, b);
+        model.Move(b,i,p);
 
     }
 
-
-
-    public int[][] getFirstBoard()
+    public Piece[][] getPieces()
     {
 
-        int [][] board = model.getFirstBoard();
-
-
-        return board;
+        return model.getPieces();
     }
+
+
+    public int getFirstWhite(){
+
+        return model.getFirstWhite();
+    }
+
+
+    public int getFirstBlack(){
+
+        return model.getFirstBlack();
+    }
+
+    public void setPieces(Piece[][] pieces){
+
+        model.setPieces(pieces);
+    }
+
+    public void updateView(){
+
+        view.updateView();
+    }
+
+
 }
