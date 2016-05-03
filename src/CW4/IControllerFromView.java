@@ -22,4 +22,6 @@ public interface IControllerFromView {
     int getBlackScore();
 
     boolean getActivePlayer();
+
+    void aimove(boolean player);
 }

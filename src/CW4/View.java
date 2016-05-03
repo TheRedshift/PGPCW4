@@ -82,8 +82,9 @@ public class View implements IView {
         whitepane = whitePlayer.getContentPane();
         whitepane.setLayout(new BorderLayout());
 
-        JButton greedyWhite = new JButton("Greedy AI white");
-        whitepane.add(greedyWhite, BorderLayout.PAGE_END);
+
+
+        whitepane.add(makeWhiteGreedy(), BorderLayout.PAGE_END);
 
         GridBagConstraints gBC = new GridBagConstraints();
         gBC.fill = GridBagConstraints.BOTH;
@@ -110,8 +111,9 @@ public class View implements IView {
         blackpane = blackPlayer.getContentPane();
         blackpane.setLayout(new BorderLayout());
 
-        JButton greedyBlack = new JButton("Greedy AI black");
-        blackpane.add(greedyBlack, BorderLayout.PAGE_END);
+
+
+
 
         JPanel blackSpace = new JPanel();
         blackSpace.setLayout(new GridBagLayout());
@@ -120,7 +122,9 @@ public class View implements IView {
 
         blackSpace.revalidate();
         blackSpace.setVisible(true);
+        blackpane.add(makeBlackGreedy(), BorderLayout.PAGE_END);
         blackpane.add(blackSpace, BorderLayout.CENTER);
+
 
 
         int whiteScore = c.getWhiteScore();
@@ -160,7 +164,46 @@ public class View implements IView {
         frame.setVisible(true);
     }
 
+    public JButton makeWhiteGreedy() {
 
+        JButton greedyWhite = new JButton("Greedy AI white");
+        if (isWhitePlaying){
+            greedyWhite.addActionListener(new ActionListener()
+            {
+
+                public void actionPerformed(ActionEvent e)
+                {
+
+                    c.aimove(true);
+                    System.out.println("Greedy white pressed");
+                }
+            }
+            );
+        }
+
+        return greedyWhite;
+    }
+
+
+    public JButton makeBlackGreedy(){
+
+        JButton greedyBlack = new JButton("Greedy AI black");
+        if (!isWhitePlaying){
+            greedyBlack.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e)
+                {
+
+                    c.aimove(false);
+                    System.out.println("Greedy black pressed");
+                }
+            }
+            );
+        }
+
+        return greedyBlack;
+
+    }
     public JPanel makeWhite() {
 
 
@@ -264,6 +307,7 @@ public class View implements IView {
 
         isWhitePlaying = c.getActivePlayer();
 
+        System.out.println(isWhitePlaying);
         if (isWhitePlaying)
         {
             player = "White";
@@ -275,7 +319,7 @@ public class View implements IView {
             player = "Black";
         }
 
-        System.out.println(player);
+        //System.out.println(player);
 
         if (frame.getContentPane().getComponent(0) instanceof JLabel){
 
@@ -285,7 +329,9 @@ public class View implements IView {
         turnLabel.setText("It is currently  " + player+"'s turn");
 
 
-        Piece[][] Pieces = c.getPieces();
+
+
+
 
         JPanel whiteSpace = makeWhite();
 
@@ -296,11 +342,22 @@ public class View implements IView {
         blackSpace.setVisible(true);
 
 
+        JButton aiWhite = makeWhiteGreedy();
+
+        JButton aiBlack = makeBlackGreedy();
+
         whitepane.remove(1);
-        whitepane.add(whiteSpace);
+        whitepane.remove(0);
+
+        whitepane.add(aiWhite, BorderLayout.PAGE_END);
+        whitepane.add(whiteSpace, BorderLayout.CENTER);
+
 
         blackpane.remove(1);
-        blackpane.add(blackSpace);
+        blackpane.remove(0);
+
+        blackpane.add(aiBlack, BorderLayout.PAGE_END);
+        blackpane.add(blackSpace, BorderLayout.CENTER);
 
         whitepane.getParent().revalidate();
         whitepane.getParent().repaint();
@@ -308,6 +365,46 @@ public class View implements IView {
         blackpane.getParent().revalidate();
         blackpane.getParent().repaint();
 
+
+        System.out.println(isWhitePlaying);
+
+
+
+
+
+    }
+
+
+    public void gameIsOver()
+
+    {
+
+        int whiteScore = c.getWhiteScore();
+        int blackScore = c.getBlackScore();
+        int diff = 0;
+        String winner ="Error";
+
+        if (whiteScore > blackScore){
+
+            winner = "White";
+            diff = whiteScore - blackScore;
+        }
+        else if (whiteScore < blackScore){
+
+            winner = "Black";
+            diff = blackScore - whiteScore;
+        }
+
+
+        updateView();
+
+
+        JOptionPane.showMessageDialog(whitepane, "You scored "+whiteScore+"points.", "InfoBox: " + "Game over", JOptionPane.INFORMATION_MESSAGE);
+
+        JOptionPane.showMessageDialog(blackpane, "You scored "+blackScore+"points.", "InfoBox: " + "Game over", JOptionPane.INFORMATION_MESSAGE);
+
+
+        JOptionPane.showMessageDialog(null, "The game is over - " + winner +"wins by "+ diff, "InfoBox: " + "Game over!", JOptionPane.INFORMATION_MESSAGE);
 
 
 

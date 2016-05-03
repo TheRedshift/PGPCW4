@@ -10,4 +10,7 @@ public interface IView {
 
 
     void updateView();
+
+
+    void gameIsOver();
 }

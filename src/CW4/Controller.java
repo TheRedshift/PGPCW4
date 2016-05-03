@@ -20,7 +20,7 @@ public class Controller implements IControllerFromModel, IControllerFromView {
     public void move(boolean p, int i, int b){
 
 
-        model.Move(b,i,p);
+        model.Move(p,i,b);
 
     }
 
@@ -67,5 +67,17 @@ public class Controller implements IControllerFromModel, IControllerFromView {
     public boolean getActivePlayer(){
 
         return model.getActivePlayer();
+    }
+
+
+    public void gameIsOver(){
+
+        view.gameIsOver();
+
+    }
+
+    public void aimove(boolean player){
+
+        model.aimove(player);
     }
 }

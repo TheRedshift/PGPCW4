@@ -8,4 +8,9 @@ import java.io.IOException;
 public interface IControllerFromModel {
 
     void updateView();
+
+    void gameIsOver();
+
+    void aimove(boolean player);
+
 }
