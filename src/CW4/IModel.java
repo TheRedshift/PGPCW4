@@ -9,13 +9,8 @@ public interface IModel {
     void Move(boolean player, int yax, int xax);
 
 
-    int getFirstBlack();
-
-    int getFirstWhite();
-
     Piece[][] getPieces();
 
-    void setPieces(Piece[][] pieces);
 
     void updateScores();
 

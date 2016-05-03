@@ -9,13 +9,8 @@ public interface IControllerFromView {
 
     void move (boolean p, int i, int b);
 
-    int getFirstBlack();
-
-    int getFirstWhite();
-
     Piece[][] getPieces();
 
-    void setPieces(Piece[][] pieces);
 
     int getWhiteScore();
 

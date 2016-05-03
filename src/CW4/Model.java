@@ -6,10 +6,10 @@ import java.util.Random;
 /**
  * Created by Rahul Soni on 02/05/2016.
  */
-public class Model implements IModel {
+class Model implements IModel {
 
     IControllerFromModel c;
-    public Model(IControllerFromModel c)
+    Model(IControllerFromModel c)
     {
         this.c = c;
     }
@@ -20,16 +20,15 @@ public class Model implements IModel {
     private static int whiteScore = 0;
     private static int blackScore = 0;
 
-    static boolean player = true;
 
-    static boolean gameOver = false;
+    private static boolean gameOver = false;
 
-    static int bestMove = 0;
+    private static int bestMove = 0;
 
-    Piece bestTarget = Pieces[0][0];
+    private Piece bestTarget = Pieces[0][0];
 
 
-    public static boolean isWhitePlaying = true;
+    private static boolean isWhitePlaying = true;
 
 
     public boolean getActivePlayer()
@@ -38,7 +37,7 @@ public class Model implements IModel {
     }
 
 
-    public void create(){
+    void create(){
 
 
         for (int i = 0; i < 8; ++i) // x value
@@ -124,23 +123,13 @@ public class Model implements IModel {
     }
 
 
-    public int getFirstWhite(){
-
-        return 2;
-    }
-
-
-    public int getFirstBlack(){
-
-        return 2;
-    }
 
     private boolean inBounds(int y, int x)
     {
         return ! (y<0 || y > 7 || x < 0 || x > 7);
     }
 
-    public int DoMove(int yax, int xax, boolean actuallyMove, boolean p)
+    private int DoMove(int yax, int xax, boolean actuallyMove, boolean p)
     {
 
         int current_player;
@@ -254,7 +243,7 @@ public class Model implements IModel {
         return capturedPoints;
     }
 
-    public Piece[][] DoMove1(int yax, int xax, boolean actuallyMove, boolean p)
+    private Piece[][] DoMove1(int yax, int xax, boolean actuallyMove, boolean p)
     {
 
         int current_player;
@@ -368,25 +357,11 @@ public class Model implements IModel {
 
 
 
-    public boolean MAI(boolean player)
+    private boolean MAI(boolean player)
     {
 
         bestMove = 0;
         bestTarget = Pieces[4][4];
-
-        int iplayer = 0;
-
-
-        if (player)
-        {
-            iplayer = 1;
-        }
-
-        else if (!player)
-        {
-            iplayer = -1;
-        }
-
 
 
         Random random = new Random();
@@ -455,12 +430,6 @@ public class Model implements IModel {
             return true;
         }
 
-
-    }
-
-    public void setPieces(Piece[][] Pieces){
-
-        Pieces = Pieces;
 
     }
 

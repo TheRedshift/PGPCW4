@@ -31,21 +31,7 @@ public class Controller implements IControllerFromModel, IControllerFromView {
     }
 
 
-    public int getFirstWhite(){
 
-        return model.getFirstWhite();
-    }
-
-
-    public int getFirstBlack(){
-
-        return model.getFirstBlack();
-    }
-
-    public void setPieces(Piece[][] pieces){
-
-        model.setPieces(pieces);
-    }
 
     public void updateView(){
 
