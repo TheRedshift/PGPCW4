@@ -1,6 +1,8 @@
 package CW4;
 
 
+import java.util.Random;
+
 /**
  * Created by Rahul Soni on 02/05/2016.
  */
@@ -387,6 +389,9 @@ public class Model implements IModel {
 
 
 
+        Random random = new Random();
+
+
         for (int x = 0; x <= 7; x++)
         {
             for (int y = 0; y <= 7; y++)
@@ -411,6 +416,20 @@ public class Model implements IModel {
                         //System.out.print(bestMove);
                         bestTarget = Pieces[x][y];
 
+
+                    }
+
+                    if (temp == bestMove)
+                    {
+
+                        int value = random.nextInt(2);
+
+                        if (value == 1)
+                        {
+
+                            bestMove = temp;
+                            bestTarget = Pieces[x][y];
+                        }
 
                     }
 
