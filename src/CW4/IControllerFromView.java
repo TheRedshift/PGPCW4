@@ -16,4 +16,8 @@ public interface IControllerFromView {
     Piece[][] getPieces();
 
     void setPieces(Piece[][] pieces);
+
+    int getWhiteScore();
+
+    int getBlackScore();
 }

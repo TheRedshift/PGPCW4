@@ -9,7 +9,6 @@ public interface IModel {
     void Move(int yax, int xax, boolean actuallyMove);
 
 
-
     int getFirstBlack();
 
     int getFirstWhite();
@@ -17,4 +16,10 @@ public interface IModel {
     Piece[][] getPieces();
 
     void setPieces(Piece[][] pieces);
+
+    void updateScores();
+
+    int getWhiteScore();
+
+    int getBlackScore();
 }

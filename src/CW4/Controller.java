@@ -53,4 +53,14 @@ public class Controller implements IControllerFromModel, IControllerFromView {
     }
 
 
+    public int getWhiteScore()
+    {
+        return model.getWhiteScore();
+    }
+
+    public int getBlackScore()
+    {
+        return model.getBlackScore();
+        }
+
 }

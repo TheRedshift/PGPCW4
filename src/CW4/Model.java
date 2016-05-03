@@ -15,6 +15,9 @@ public class Model implements IModel {
 
     private static Piece[][] Pieces = new Piece[8][8];
 
+    private static int whiteScore = 0;
+    private static int blackScore = 0;
+
 
 
     public void create(){
@@ -37,6 +40,7 @@ public class Model implements IModel {
         Pieces[4][4].setIsOwned(1);
 
 
+        updateScores();
 
 
     }
@@ -48,10 +52,48 @@ public class Model implements IModel {
 
 
 
+    public int getWhiteScore(){
+
+        return whiteScore;
+    }
+
+
+    public int getBlackScore(){
+
+        return blackScore;
+    }
+
+
+    public void updateScores()
+    {
+
+        whiteScore = 0;
+        blackScore = 0;
+
+        for (int x = 0; x <= 7; x++)
+        {
+            for (int y = 0; y <= 7; y++)
+            {
+
+                if (Pieces[x][y].isOwned() == 1)
+                {
+                    whiteScore += 1;
+                }
+                else if (Pieces[x][y].isOwned() == -1)
+                {
+                    blackScore += 1;
+                }
+
+            }
+
+        }
+    }
 
     public void Move(int yax, int xax, boolean p){
 
         DoMove1(Pieces, yax, xax, true, p);
+
+        updateScores();
 
         c.updateView();
     }

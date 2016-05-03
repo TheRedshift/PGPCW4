@@ -114,7 +114,11 @@ public class View implements IView {
         blackpane.add(blackSpace, BorderLayout.CENTER);
 
 
-        JLabel scoreLabel = new JLabel("The game is currently tied 0-0", SwingConstants.CENTER);
+        int whiteScore = c.getWhiteScore();
+        int blackScore = c.getBlackScore();
+
+
+        JLabel scoreLabel = new JLabel("The score is currently "+whiteScore +" - "+blackScore, SwingConstants.CENTER);
 
         JLabel turnLabel = new JLabel("It is currently white's turn", SwingConstants.CENTER);
 
@@ -222,6 +226,18 @@ public class View implements IView {
 
 
     public void updateView() {
+
+
+
+        int whiteScore = c.getWhiteScore();
+        int blackScore = c.getBlackScore();
+
+
+        if (frame.getContentPane().getComponent(0) instanceof JLabel){
+
+            ((JLabel) frame.getContentPane().getComponent(0)).setText("The score is currently " + whiteScore +" - "+blackScore);
+        }
+
 
         Piece[][] Pieces = c.getPieces();
 
