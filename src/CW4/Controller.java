@@ -63,4 +63,9 @@ public class Controller implements IControllerFromModel, IControllerFromView {
         return model.getBlackScore();
         }
 
+
+    public boolean getActivePlayer(){
+
+        return model.getActivePlayer();
+    }
 }

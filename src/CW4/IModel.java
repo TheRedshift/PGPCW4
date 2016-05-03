@@ -22,4 +22,6 @@ public interface IModel {
     int getWhiteScore();
 
     int getBlackScore();
+
+    boolean getActivePlayer();
 }

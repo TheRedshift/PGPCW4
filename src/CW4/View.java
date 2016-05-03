@@ -22,6 +22,11 @@ public class View implements IView {
         this.c = c;
     }
 
+
+    static JLabel turnLabel;
+
+    static boolean isWhitePlaying;
+
     static Container blackpane;
 
     static Container whitepane;
@@ -87,9 +92,13 @@ public class View implements IView {
         whiteSpace.setLayout(new GridBagLayout());
 
 
+        isWhitePlaying = c.getActivePlayer();
+
         whiteSpace = makeWhite();
         whiteSpace.setVisible(true);
         whitepane.add(whiteSpace, BorderLayout.CENTER);
+
+
 
 
         JInternalFrame blackPlayer = new JInternalFrame("Black");
@@ -118,9 +127,24 @@ public class View implements IView {
         int blackScore = c.getBlackScore();
 
 
+
+        String player = "";
+
+        if (isWhitePlaying)
+        {
+            player = "White";
+        }
+
+        else if (!isWhitePlaying)
+        {
+            player = "Black";
+        }
+
+
+
         JLabel scoreLabel = new JLabel("The score is currently "+whiteScore +" - "+blackScore, SwingConstants.CENTER);
 
-        JLabel turnLabel = new JLabel("It is currently white's turn", SwingConstants.CENTER);
+        turnLabel = new JLabel("It is currently" +player+"'s turn", SwingConstants.CENTER);
 
 
         desktop.add(whitePlayer);
@@ -157,11 +181,13 @@ public class View implements IView {
                 trialPiece.setBackground(myGreen);
                 if (l.isOwned() == 0) {
                     trialPiece.setIcon(new ImageIcon(noCircle));
-                    trialPiece.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            c.move(true, trialPiece.getMyX(),trialPiece.getMyY());
-                        }
-                    });
+                    if (isWhitePlaying) {
+                        trialPiece.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                c.move(true, trialPiece.getMyX(), trialPiece.getMyY());
+                            }
+                        });
+                    }
                     tempPanel.add(trialPiece, gBC);
 
                 } else if (l.isOwned() == 1) {
@@ -199,11 +225,13 @@ public class View implements IView {
                 tempPiece.setBackground(myGreen);
                 if (l.isOwned() == 0) {
                     tempPiece.setIcon(new ImageIcon(noCircle));
-                    tempPiece.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            c.move(false, 7 - tempPiece.getMyX(),7 -tempPiece.getMyY());
-                        }
-                    });
+                    if (!isWhitePlaying) {
+                        tempPiece.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                c.move(false, 7 - tempPiece.getMyX(), 7 - tempPiece.getMyY());
+                            }
+                        });
+                    }
                     tempPanel.add(tempPiece, gBC);
 
                 } else if (l.isOwned() == 1) {
@@ -232,11 +260,29 @@ public class View implements IView {
         int whiteScore = c.getWhiteScore();
         int blackScore = c.getBlackScore();
 
+        String player = "";
+
+        isWhitePlaying = c.getActivePlayer();
+
+        if (isWhitePlaying)
+        {
+            player = "White";
+
+        }
+
+        else if (!isWhitePlaying)
+        {
+            player = "Black";
+        }
+
+        System.out.println(player);
 
         if (frame.getContentPane().getComponent(0) instanceof JLabel){
 
             ((JLabel) frame.getContentPane().getComponent(0)).setText("The score is currently " + whiteScore +" - "+blackScore);
         }
+
+        turnLabel.setText("It is currently  " + player+"'s turn");
 
 
         Piece[][] Pieces = c.getPieces();

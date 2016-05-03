@@ -20,4 +20,6 @@ public interface IControllerFromView {
     int getWhiteScore();
 
     int getBlackScore();
+
+    boolean getActivePlayer();
 }

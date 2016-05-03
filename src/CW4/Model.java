@@ -19,6 +19,14 @@ public class Model implements IModel {
     private static int blackScore = 0;
 
 
+    public static boolean isWhitePlaying = true;
+
+
+    public boolean getActivePlayer()
+    {
+        return isWhitePlaying;
+    }
+
 
     public void create(){
 
@@ -270,6 +278,8 @@ public class Model implements IModel {
         if (legal)
         {
             Pieces[xax][yax].setIsOwned(current_player);
+            isWhitePlaying = !isWhitePlaying;
+            //System.out.println(isWhitePlaying);
         }
         return Pieces;
     }
