@@ -68,6 +68,8 @@ public class View implements IView {
 
     public void create() {
 
+        isWhitePlaying = c.getActivePlayer();
+
         frame = new JFrame("Reversii");
         frame.setLayout(new BorderLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -83,8 +85,8 @@ public class View implements IView {
         whitepane.setLayout(new BorderLayout());
 
 
-
-        whitepane.add(makeWhiteGreedy(), BorderLayout.PAGE_END);
+        JButton whitegreedy = makeWhiteGreedy();
+        whitepane.add(whitegreedy, BorderLayout.PAGE_END);
 
         GridBagConstraints gBC = new GridBagConstraints();
         gBC.fill = GridBagConstraints.BOTH;
@@ -93,7 +95,7 @@ public class View implements IView {
         whiteSpace.setLayout(new GridBagLayout());
 
 
-        isWhitePlaying = c.getActivePlayer();
+
 
         whiteSpace = makeWhite();
         whiteSpace.setVisible(true);
@@ -122,7 +124,9 @@ public class View implements IView {
 
         blackSpace.revalidate();
         blackSpace.setVisible(true);
-        blackpane.add(makeBlackGreedy(), BorderLayout.PAGE_END);
+
+        JButton greedyblack = makeBlackGreedy();
+        blackpane.add(greedyblack, BorderLayout.PAGE_END);
         blackpane.add(blackSpace, BorderLayout.CENTER);
 
 
@@ -204,6 +208,8 @@ public class View implements IView {
         return greedyBlack;
 
     }
+
+
     public JPanel makeWhite() {
 
 
@@ -307,7 +313,7 @@ public class View implements IView {
 
         isWhitePlaying = c.getActivePlayer();
 
-        System.out.println(isWhitePlaying);
+        //System.out.println(isWhitePlaying);
         if (isWhitePlaying)
         {
             player = "White";
@@ -399,12 +405,12 @@ public class View implements IView {
         updateView();
 
 
-        JOptionPane.showMessageDialog(whitepane, "You scored "+whiteScore+"points.", "InfoBox: " + "Game over", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(whitepane, "You scored "+whiteScore+"points.", "EASY GAME : " + "Game over", JOptionPane.INFORMATION_MESSAGE);
 
-        JOptionPane.showMessageDialog(blackpane, "You scored "+blackScore+"points.", "InfoBox: " + "Game over", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(blackpane, "You scored "+blackScore+"points.", "EASY LIFE: " + "Game over", JOptionPane.INFORMATION_MESSAGE);
 
 
-        JOptionPane.showMessageDialog(null, "The game is over - " + winner +"wins by "+ diff, "InfoBox: " + "Game over!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The game is over - " + winner +"wins by "+ diff, "Not even trying: " + "Game over!", JOptionPane.INFORMATION_MESSAGE);
 
 
 

@@ -113,8 +113,6 @@ public class Model implements IModel {
         updateScores();
 
 
-        isWhitePlaying = !isWhitePlaying;
-
 
         c.updateView();
 
@@ -355,6 +353,7 @@ public class Model implements IModel {
         {
             Pieces[xax][yax].setIsOwned(current_player);
             //System.out.println(isWhitePlaying);
+            isWhitePlaying = !isWhitePlaying;
         }
 
 
@@ -374,19 +373,16 @@ public class Model implements IModel {
         bestTarget = Pieces[4][4];
 
         int iplayer = 0;
-        int eplayer = 0;
 
 
         if (player)
         {
             iplayer = 1;
-            eplayer = -1;
         }
 
         else if (!player)
         {
             iplayer = -1;
-            eplayer = 1;
         }
 
 
@@ -399,7 +395,7 @@ public class Model implements IModel {
                 int temp;
 
 
-                    temp = DoMove(x,y,player,false);
+                    temp = DoMove(y,x,false,player);
 
                     if (temp == 0){
                         continue;
@@ -449,12 +445,12 @@ public class Model implements IModel {
 
     }
 
-    public void aimove(boolean player){
+    public void aimove(boolean player)
+    {
 
         if (MAI(player)){
 
 
-            System.out.print(bestTarget.getMyX());
             Move(player,bestTarget.getMyX(),bestTarget.getMyY() );
 
         }
